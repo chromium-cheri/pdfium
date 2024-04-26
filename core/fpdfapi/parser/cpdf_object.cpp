@@ -18,7 +18,11 @@
 
 CPDF_Object::~CPDF_Object() = default;
 
+#if defined(__CHERI_PURE_CAPABILITY__)
+static_assert(sizeof(uint64_t) >= sizeof(ptraddr_t),
+#else // defined(__CHERI_PURE_CAPABILITY__)
 static_assert(sizeof(uint64_t) >= sizeof(CPDF_Object*),
+#endif // defined(__CHERI_PURE_CAPABILITY__)
               "Need a bigger type for cache keys");
 
 static_assert(CPDF_Parser::kMaxObjectNumber < static_cast<uint32_t>(1) << 31,
