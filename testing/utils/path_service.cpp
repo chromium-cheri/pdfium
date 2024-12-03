@@ -14,6 +14,10 @@
 #elif defined(__Fuchsia__)
 #include <sys/stat.h>
 #include <unistd.h>
+#elif defined(__FreeBSD__)
+#include <sys/limits.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #else  // Linux
 #include <linux/limits.h>
 #include <sys/stat.h>
@@ -28,6 +32,7 @@
 namespace {
 
 #if defined(__APPLE__) || defined(__Fuchsia__) || \
+    defined(__FreeBSD__) || \
     (defined(ANDROID) && __ANDROID_API__ < 21)
 using stat_wrapper_t = struct stat;
 
