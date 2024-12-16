@@ -17,6 +17,7 @@
 #elif defined(__FreeBSD__)
 #include <sys/limits.h>
 #include <sys/stat.h>
+#include <sys/sysctl.h>
 #include <unistd.h>
 #else  // Linux
 #include <linux/limits.h>
@@ -90,6 +91,19 @@ bool PathService::GetExecutableDir(std::string* path) {
   path->resize(path_length - 1);
   if (_NSGetExecutablePath(&((*path)[0]), &path_length))
     return false;
+#elif (__FreeBSD__)
+  int mib[4];
+  mib[0] = CTL_KERN;
+  mib[1] = KERN_PROC;
+  mib[2] = KERN_PROC_PATHNAME;
+  mib[3] = -1;
+  char buf[PATH_MAX];
+  size_t count = sizeof(buf);
+  int ret = sysctl(mib, 4, buf, &count, NULL, 0);
+  if (ret < 0)
+    return false;
+
+  *path = std::string(buf, count);
 #else   // Linux
   static const char kProcSelfExe[] = "/proc/self/exe";
   char buf[PATH_MAX];
