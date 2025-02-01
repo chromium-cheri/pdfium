@@ -28,6 +28,7 @@ vars = {
   'fuchsia_sdk_cipd_prefix': 'fuchsia/sdk/gn/',
 
   'chromium_git': 'https://chromium.googlesource.com',
+  'chromium_cheri_git': 'https://github.com',
   'pdfium_git': 'https://pdfium.googlesource.com',
   'skia_git': 'https://skia.googlesource.com',
 
@@ -168,13 +169,14 @@ vars = {
   # Three lines of non-changing comments so that
   # the commit queue can handle CLs rolling zlib
   # and whatever else without interference from each other.
-  'zlib_revision': '14dd4c4455602c9b71a1a89b5cafd1f4030d2e3f',
+  'zlib_revision': '05ca39ba1b282fc3ed9e5e3f0ebfadafaa25ef21',
 }
 
 # Only these hosts are allowed for dependencies in this DEPS file.
 # If you need to add a new host, and the new host is not in Chromium's DEPS
 # file's allowed_hosts list, contact Chrome infrastructure team.
 allowed_hosts = [
+  'github.com',
   'chromium.googlesource.com',
   'pdfium.googlesource.com',
   'skia.googlesource.com',
@@ -335,6 +337,7 @@ deps = {
       }
     ],
     'dep_type': 'cipd',
+    'condition': 'host_os != freebsd',
   },
 
   'third_party/skia': {
@@ -347,7 +350,7 @@ deps = {
         Var('test_fonts_revision'),
 
   'third_party/zlib':
-    Var('chromium_git') + '/chromium/src/third_party/zlib.git@' +
+    Var('chromium_cheri_git') + '/zlib.git@' +
         Var('zlib_revision'),
 
   'tools/clang':
