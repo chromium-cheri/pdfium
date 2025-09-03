@@ -350,7 +350,7 @@ deps = {
         Var('test_fonts_revision'),
 
   'third_party/zlib':
-    Var('chromium_cheri_git') + '/zlib.git@' +
+    Var('chromium_cheri_git') + '/chromium-cheri/zlib.git@' +
         Var('zlib_revision'),
 
   'tools/clang':
